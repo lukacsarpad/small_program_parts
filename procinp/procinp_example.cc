@@ -58,14 +58,15 @@ int main(int argc, char **argv){
 
 
   // Define input variables
-  std::vector<std::unique_ptr<input_variable> > myvars;
+  variable_binder myvars;
+
   double beta;
   std::vector<double> myvec, fixvec;
   std::string mytext;
-  myvars.push_back( std::unique_ptr< input_variable >( new input_variable_scalar< double >( beta ,  "beta" , "a double called beta" ) ) );
-  myvars.push_back( std::unique_ptr< input_variable >( new input_variable_vector< double >( myvec , "v" ,    "a dynamic vector" ) ) );
-  myvars.push_back( std::unique_ptr< input_variable >( new input_variable_vector_fixedlength< double >( fixvec , "fv" , "a vector of lenght 5" , 5 ) ) );
-  myvars.push_back( std::unique_ptr< input_variable >( new input_variable_scalar< std::string >( mytext, "text", "a string" ) ) );
+  myvars << variable( beta ,  "beta" , "a double called beta" )
+         << variable( myvec , "v" ,    "a dynamic vector" )
+         << variable( fixvec , "fv" , "a vector of lenght 5" , 5 )
+         << variable( mytext, "text", "a string" );
 
   if( cmdline_vars.count("chelp") ){
     procinp_help( std::cout , myvars);
@@ -78,7 +79,7 @@ int main(int argc, char **argv){
     std::cerr << "Error: " << e.what() << std::endl;
     return -1;
   }
-    
+
   std::cout << "Input file: " << input_file << std::endl;
 
   std::ifstream input_file_stream( input_file.c_str() );
@@ -90,7 +91,7 @@ int main(int argc, char **argv){
 
   // process the input file
   try{
-    process_input_file(input_file_stream, myvars);
+    input_file_stream >> myvars;
   } catch( procinp_exception_invalid_name & e ){
     std::cerr << "Error: " << e.what() << ": " << e.which() << " in file " << input_file << ", line no. " << e.where() << std::endl;
     return -2;

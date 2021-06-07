@@ -1,4 +1,4 @@
-CFLAGS = -O2 -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE -D_GNU_SOURCE
+CFLAGS = -Wall -O2 -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE -D_GNU_SOURCE
 #link for c++, do not include electric fence
 LDLIBS = -lm -lstdc++ -lboost_program_options
 # link for c++
@@ -24,5 +24,5 @@ clean:
 distclean:
 	rm -f *.o *~
 
-procinp_example:	procinp_example.o procinp.o
+procinp_example:	procinp_example.o
 
