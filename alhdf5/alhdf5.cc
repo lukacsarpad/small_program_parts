@@ -19,12 +19,12 @@ void HDF5_create(const std::string &filename, const std::string &description){
   H5File outfile(filename, H5F_ACC_TRUNC);
 
   Group properties = outfile.createGroup("/properties");
-  
+
   hsize_t description_dims[] = {description.length()};
   DataSpace description_dataspace(1, description_dims);
 
   DataSet description_dataset = outfile.createDataSet("/properties/description", PredType::C_S1, description_dataspace);
-  
+
   description_dataset.write(description.c_str(), PredType::C_S1);
 }
 
@@ -117,7 +117,7 @@ void HDF5_save(const std::string &filename, const std::string &varname, const bo
 
   DataSet data_dataset = outfile.createDataSet(varname, PredType::NATIVE_DOUBLE, data_dataspace);
 
-  data_dataset.write(&data(0,0), PredType::NATIVE_DOUBLE);
+  data_dataset.write(&data(0, 0), PredType::NATIVE_DOUBLE);
 }
 
 
@@ -153,7 +153,7 @@ void HDF5_save(const std::string &filename, const std::string &varname, const bo
 
   DataSet data_dataset = outfile.createDataSet(varname, PredType::NATIVE_INT, data_dataspace);
 
-  data_dataset.write(&data(0,0), PredType::NATIVE_INT);
+  data_dataset.write(&data(0, 0), PredType::NATIVE_INT);
 }
 
 // save: complex vector, matrix
@@ -203,7 +203,7 @@ void HDF5_save(const std::string &filename, const std::string &varname, const bo
 
   DataSet data_dataset = outfile.createDataSet(varname, NATIVE_COMPLEX, data_dataspace);
 
-  data_dataset.write(&data(0,0), NATIVE_COMPLEX);
+  data_dataset.write(&data(0, 0), NATIVE_COMPLEX);
 }
 
 // read: scalar types
@@ -297,7 +297,7 @@ void HDF5_read(const std::string &filename, const std::string &varname, std::vec
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
-  vec=std::vector<double>(dims[0]);
+  vec = std::vector<double>(dims[0]);
   data_dataset.read(&vec[0], PredType::NATIVE_DOUBLE);
 }
 
@@ -312,7 +312,7 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
-  vec=boost::numeric::ublas::vector<double>(dims[0]);
+  vec = boost::numeric::ublas::vector<double>(dims[0]);
   data_dataset.read(&vec[0], PredType::NATIVE_DOUBLE);
 }
 
@@ -327,8 +327,8 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
   hsize_t dims[2];
   data_dataspace.getSimpleExtentDims( dims );
 
-  mat=boost::numeric::ublas::matrix<double>(dims[0], dims[1]);
-  data_dataset.read( &mat(0,0), PredType::NATIVE_DOUBLE);
+  mat = boost::numeric::ublas::matrix<double>(dims[0], dims[1]);
+  data_dataset.read( &mat(0, 0), PredType::NATIVE_DOUBLE);
 }
 
 
@@ -345,7 +345,7 @@ void HDF5_read(const std::string &filename, const std::string &varname, std::vec
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
-  vec=std::vector<int>(dims[0]);
+  vec = std::vector<int>(dims[0]);
   data_dataset.read(&vec[0], PredType::NATIVE_INT);
 }
 
@@ -360,7 +360,7 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
-  vec=boost::numeric::ublas::vector<int>(dims[0]);
+  vec = boost::numeric::ublas::vector<int>(dims[0]);
   data_dataset.read(&vec[0], PredType::NATIVE_INT);
 }
 
@@ -375,8 +375,8 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
   hsize_t dims[2];
   data_dataspace.getSimpleExtentDims( dims );
 
-  mat=boost::numeric::ublas::matrix<int>(dims[0], dims[1]);
-  data_dataset.read( &mat(0,0), PredType::NATIVE_INT);
+  mat = boost::numeric::ublas::matrix<int>(dims[0], dims[1]);
+  data_dataset.read( &mat(0, 0), PredType::NATIVE_INT);
 }
 
 
@@ -398,7 +398,7 @@ void HDF5_read(const std::string &filename, const std::string &varname, std::vec
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
-  vec=std::vector<std::complex<double> >(dims[0]);
+  vec = std::vector<std::complex<double> >(dims[0]);
   data_dataset.read(&vec[0], NATIVE_COMPLEX);
 }
 
@@ -418,7 +418,7 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
-  vec=boost::numeric::ublas::vector<std::complex<double> >(dims[0]);
+  vec = boost::numeric::ublas::vector<std::complex<double> >(dims[0]);
   data_dataset.read(&vec[0], NATIVE_COMPLEX);
 }
 
@@ -438,8 +438,8 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
   hsize_t dims[2];
   data_dataspace.getSimpleExtentDims( dims );
 
-  mat=boost::numeric::ublas::matrix<std::complex<double> >(dims[0], dims[1]);
-  data_dataset.read( &mat(0,0), NATIVE_COMPLEX);
+  mat = boost::numeric::ublas::matrix<std::complex<double> >(dims[0], dims[1]);
+  data_dataset.read( &mat(0, 0), NATIVE_COMPLEX);
 }
 
 
@@ -537,7 +537,7 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
   data_dataspace.getSimpleExtentDims( dims );
   if( dims[0] != m.size1() || dims[1] != m.size2() ) throw("Size mismatch.");
 
-  data_dataset.write(&m(0,0), PredType::NATIVE_DOUBLE);
+  data_dataset.write(&m(0, 0), PredType::NATIVE_DOUBLE);
 }
 
 void HDF5_replace(const std::string & filename, const std::string &varname, const std::vector<int> &v){
@@ -582,7 +582,7 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
   data_dataspace.getSimpleExtentDims( dims );
   if( dims[0] != m.size1() || dims[1] != m.size2() ) throw("Size mismatch.");
 
-  data_dataset.write(&m(0,0), PredType::NATIVE_INT);
+  data_dataset.write(&m(0, 0), PredType::NATIVE_INT);
 }
 
 
@@ -643,6 +643,6 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
   data_dataspace.getSimpleExtentDims( dims );
   if( dims[0] != m.size1() || dims[1] != m.size2() ) throw("Size mismatch.");
 
-  data_dataset.write(&m(0,0), NATIVE_COMPLEX);
+  data_dataset.write(&m(0, 0), NATIVE_COMPLEX);
 }
 

@@ -1,0 +1,42 @@
+name: ci_make
+
+on:  push
+
+jobs:
+  MakeProcinp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: xargs -a procinp/packages.txt sudo apt-get install
+      - name: Makefile run
+        working-directory: ./procinp/
+        run: make
+
+  MakeALhdf5:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: xargs -a alhdf5/packages.txt sudo apt-get install
+      - name: Makefile run
+        working-directory: ./alhdf5/
+        run: make
+
+  Linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Cpp Lint
+        run: |
+          pip install cpplint
+          cpplint --recursive .
+#      - name: Python Lint
+#        working-directory: ./colnew/00test
+#        run: |
+#          pip install flake8
+#          flake8 --max-line-length=256
+#          echo "flake8 done"

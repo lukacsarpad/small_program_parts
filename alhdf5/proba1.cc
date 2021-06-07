@@ -6,13 +6,13 @@
 // Creates a hdf5 file, deletes it if it exists
 // Also writes data to it
 
-main(){
+int main(){
   HDF5_create("testfile.h5", "hdf5 file written by proba1");
 
-  double d=M_PI, e=M_E;
+  double d = M_PI, e = M_E;
   HDF5_save("testfile.h5", "properties/pi", d);
 
-  std::complex<double> ii(0,1);
+  std::complex<double> ii(0, 1);
 
   HDF5_create_group("testfile.h5", "/my_data");
   HDF5_save("testfile.h5", "my_data/inch", e);
@@ -29,8 +29,8 @@ main(){
   HDF5_save("testfile.h5", "my_data/a_vector", vec1);
 
   std::vector<std::complex<double> > vec2(2);
-  vec2[0] = std::complex<double>(1,-1);
-  vec2[1] = std::complex<double>(M_PI,M_E);
+  vec2[0] = std::complex<double>(1, -1);
+  vec2[1] = std::complex<double>(M_PI, M_E);
 
   HDF5_save("testfile.h5", "my_data/a_complex_vector", vec2);
 
@@ -40,11 +40,11 @@ main(){
 
   HDF5_save("testfile.h5", "my_data/another_vector", vec3);
 
-  boost::numeric::ublas::matrix<double>  m(2,2);
-  m(0,0) = 0.0;
-  m(0,1) = M_PI;
-  m(1,0) = -1.25;
-  m(1,1) = -M_E;
+  boost::numeric::ublas::matrix<double>  m(2, 2);
+  m(0, 0) = 0.0;
+  m(0, 1) = M_PI;
+  m(1, 0) = -1.25;
+  m(1, 1) = -M_E;
 
   HDF5_save("testfile.h5", "my_data/a_matrix", m);
 
@@ -54,5 +54,5 @@ main(){
   iv[2] = 3;
 
   HDF5_save("testfile.h5", "my_data/intvec", iv);
-
+  return 0;
 }

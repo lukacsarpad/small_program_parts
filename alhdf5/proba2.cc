@@ -9,19 +9,19 @@
 
 // Opens an hdf5 file, reads data from it
 
-main(){
+int main(){
   std::string s;
-  HDF5_read("testfile.h5", "properties/description",s);
+  HDF5_read("testfile.h5", "properties/description", s);
   std::cout << "properties/description: " << s << std::endl;
 
   double d = HDF5_read("testfile.h5", "my_data/inch");
   std::cout << std::scientific << "variable my_data/inch: " << d << std::endl;
-  
+
   std::cout << "variables/a_complex: " << HDF5_read_complex("testfile.h5", "my_data/a_complex") << std::endl;
 
   std::vector<double> v;
   HDF5_read("testfile.h5", "my_data/a_vector", v);
-  std::cout << "variable my_data/a_vector: "; for(int i=0; i<v.size(); i++) std::cout << v[i] << ", "; std::cout <<std::endl;
+  std::cout << "variable my_data/a_vector: "; for(unsigned int i = 0; i < v.size(); i++) std::cout << v[i] << ", "; std::cout <<std::endl;
 
   boost::numeric::ublas::vector<double> v2;
   HDF5_read("testfile.h5", "my_data/another_vector", v2);
@@ -29,7 +29,7 @@ main(){
 
   std::vector<std::complex<double> > w;
   HDF5_read("testfile.h5", "my_data/a_complex_vector", w);
-  std::cout << "variable my_data/a_complex_vector: "; for(int i=0; i<w.size(); i++) std::cout << w[i] << ", "; std::cout <<std::endl;
+  std::cout << "variable my_data/a_complex_vector: "; for(unsigned int i = 0; i < w.size(); i++) std::cout << w[i] << ", "; std::cout <<std::endl;
 
   boost::numeric::ublas::vector<std::complex<double> > w2;
   HDF5_read("testfile.h5", "my_data/a_complex_vector", w2);
@@ -39,9 +39,10 @@ main(){
   boost::numeric::ublas::matrix<double> m;
   HDF5_read("testfile.h5", "my_data/a_matrix", m);
   std::cout << "variable my_data/a_matrix: " << m << std::endl;
-  // for(int i=0; i<m.nrows(); i++) { for(int j=0; j<m.ncols(); j++) std::cout << m(i,j) << ", " ; std::cout <<std::endl; } 
 
   std::vector<int> iv;
   HDF5_read("testfile.h5", "my_data/intvec", iv);
-  std::cout << "variable my_data/intvec: "; for(int i=0; i<iv.size(); i++) std::cout << iv[i] << ", "; std::cout <<std::endl;
+  std::cout << "variable my_data/intvec: "; for(unsigned int i = 0; i < iv.size(); i++) std::cout << iv[i] << ", "; std::cout <<std::endl;
+
+  return 0;
 }

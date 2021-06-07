@@ -5,8 +5,8 @@
 
 // Opens a hdf5 file, replaces data in it
 
-main(){
-  double d=-M_PI, e=-2.54;
+int main(){
+  double d = -M_PI, e = -2.54;
   HDF5_replace("testfile.h5", "properties/pi", d);
 
   HDF5_replace("testfile.h5", "my_data/inch", e);
@@ -22,16 +22,16 @@ main(){
   HDF5_replace("testfile.h5", "my_data/a_vector", vec1);
 
   std::vector<std::complex<double> > vec2(2);
-  vec2[0] = std::complex<double>(-1,-1);
-  vec2[1] = std::complex<double>(-M_PI,M_E);
+  vec2[0] = std::complex<double>(-1, -1);
+  vec2[1] = std::complex<double>(-M_PI, M_E);
 
   HDF5_replace("testfile.h5", "my_data/a_complex_vector", vec2);
 
-  boost::numeric::ublas::matrix<double> m(2,2);
-  m(0,0) = 0.0;
-  m(0,1) = -M_PI;
-  m(1,0) = 1.25;
-  m(1,1) = -M_E;
+  boost::numeric::ublas::matrix<double> m(2, 2);
+  m(0, 0) = 0.0;
+  m(0, 1) = -M_PI;
+  m(1, 0) = 1.25;
+  m(1, 1) = -M_E;
 
   HDF5_replace("testfile.h5", "my_data/a_matrix", m);
 
@@ -41,4 +41,6 @@ main(){
   iv[2] = 1;
 
   HDF5_replace("testfile.h5", "my_data/intvec", iv);
+
+  return 0;
 }
