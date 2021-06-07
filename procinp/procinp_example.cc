@@ -19,13 +19,12 @@
 
 #include "procinp.h"
 
-namespace po=boost::program_options;
+namespace po = boost::program_options;
 
 int main(int argc, char **argv){
   po::options_description disp_opts("Allowed options"), hidden_opts("Hidden options"), all_opts("All options");
-    
+
   std::string input_file, output_file;
-  int num;
 
   disp_opts.add_options()("help,h", "Produce help message")
     ("chelp,c", "Display input file format help mesage");
@@ -37,7 +36,7 @@ int main(int argc, char **argv){
   all_opts.add(hidden_opts);
 
   po::positional_options_description pos_opts;
-  pos_opts.add("input-file",1);
+  pos_opts.add("input-file", 1);
 
   po::variables_map cmdline_vars;
   try{
@@ -84,7 +83,7 @@ int main(int argc, char **argv){
 
   std::ifstream input_file_stream( input_file.c_str() );
 
-  if( ! input_file_stream ){
+  if( !input_file_stream ){
     std::cerr << "Error opening file " << input_file << std::endl;
     return -2;
   }

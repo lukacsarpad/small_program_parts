@@ -3,8 +3,8 @@
 #include "boost/numeric/ublas/matrix.hpp"
 
 
-#ifndef __ALHDF5_H
-#define __ALHDF5_H
+#ifndef ALHDF5_ALHDF5_H_
+#define ALHDF5_ALHDF5_H_
 
 void HDF5_create(const std::string &, const std::string &);
 
@@ -61,4 +61,4 @@ void HDF5_replace(const std::string &, const std::string &, const boost::numeric
 void HDF5_replace(const std::string &, const std::string &, const std::vector<std::complex<double> > &);
 void HDF5_replace(const std::string &, const std::string &, const boost::numeric::ublas::matrix<std::complex<double> > &);
 
-#endif
+#endif  // ALHDF5_ALHDF5_H_
