@@ -2,7 +2,7 @@
 #include<vector>
 #include "boost/numeric/ublas/matrix.hpp"
 
-
+#pragma once
 #ifndef ALHDF5_ALHDF5_H_
 #define ALHDF5_ALHDF5_H_
 
