@@ -25,6 +25,17 @@ jobs:
         working-directory: ./alhdf5/
         run: make
 
+  MakeKahanSum:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: xargs -a kahansum/packages.txt sudo apt-get install
+      - name: Makefile run
+        working-directory: ./kahansum/
+        run: make
+
   Linting:
     runs-on: ubuntu-latest
     steps:
