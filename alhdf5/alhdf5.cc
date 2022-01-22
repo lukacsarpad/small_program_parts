@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <exception>
 #include <H5Cpp.h>
 #include "boost/numeric/ublas/matrix.hpp"
 using namespace H5;
@@ -213,12 +214,12 @@ double HDF5_read(const std::string &filename, const std::string &varname){
 
   DataSet data_dataset = infile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw("Not a double.");
+  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw(std::domain_error("Not a double."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != 1 ) throw("Vector");
+  if( dims[0] != 1 ) throw(std::domain_error("Vector."));
 
   double retval;
   data_dataset.read(&retval, PredType::NATIVE_DOUBLE);
@@ -231,12 +232,12 @@ int HDF5_read_int(const std::string &filename, const std::string &varname){
 
   DataSet data_dataset = infile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw("Not an integer.");
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional,"));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != 1 ) throw("Vector");
+  if( dims[0] != 1 ) throw(std::domain_error("Vector"));
 
   int retval;
   data_dataset.read(&retval, PredType::NATIVE_INT);
@@ -248,7 +249,7 @@ std::complex<double> HDF5_read_complex(const std::string &filename, const std::s
   H5File infile(filename, H5F_ACC_RDONLY);
 
   DataSet data_dataset = infile.openDataSet(varname);
-  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw("Type error");
+  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw(std::domain_error("Type error."));
 
 
   CompType NATIVE_COMPLEX( sizeof( std::complex<double> ) );
@@ -257,10 +258,10 @@ std::complex<double> HDF5_read_complex(const std::string &filename, const std::s
   NATIVE_COMPLEX.pack();
 
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != 1 ) throw("Vector");
+  if( dims[0] != 1 ) throw(std::domain_error("Vector."));
 
   std::complex<double> retval;
   data_dataset.read(&retval, NATIVE_COMPLEX);
@@ -274,9 +275,9 @@ void HDF5_read(const std::string &filename, const std::string &varname, std::str
 
   DataSet data_dataset = infile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_STRING ) throw("Not a string.");
+  if( data_dataset.getTypeClass() != H5T_STRING ) throw(std::domain_error("Not a string."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Not a string");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Not a string."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
@@ -291,9 +292,9 @@ void HDF5_read(const std::string &filename, const std::string &varname, std::vec
 
   DataSet data_dataset = infile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw("Not a double.");
+  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw(std::domain_error("Not a double."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
@@ -306,9 +307,9 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
 
   DataSet data_dataset = infile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw("Not a double.");
+  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw(std::domain_error("Not a double."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
@@ -321,9 +322,9 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
 
   DataSet data_dataset = infile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw("Not a double.");
+  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw(std::domain_error("Not a double."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw("Not a matrix");
+  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw(std::domain_error("Not a matrix."));
   hsize_t dims[2];
   data_dataspace.getSimpleExtentDims( dims );
 
@@ -339,9 +340,9 @@ void HDF5_read(const std::string &filename, const std::string &varname, std::vec
 
   DataSet data_dataset = infile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw("Not an integer.");
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
@@ -354,9 +355,9 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
 
   DataSet data_dataset = infile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw("Not an integer.");
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
@@ -369,9 +370,9 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
 
   DataSet data_dataset = infile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw("Not an integer.");
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw("Not a matrix");
+  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw(std::domain_error("Not a matrix."));
   hsize_t dims[2];
   data_dataspace.getSimpleExtentDims( dims );
 
@@ -392,9 +393,9 @@ void HDF5_read(const std::string &filename, const std::string &varname, std::vec
   NATIVE_COMPLEX.insertMember( "i", sizeof(double), PredType::NATIVE_DOUBLE);
   NATIVE_COMPLEX.pack();
 
-  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw("Type error.");
+  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw(std::domain_error("Dataset type error."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
@@ -412,9 +413,9 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
   NATIVE_COMPLEX.insertMember( "i", sizeof(double), PredType::NATIVE_DOUBLE);
   NATIVE_COMPLEX.pack();
 
-  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw("Type error.");
+  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw(std::domain_error("Dataset type error."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
 
@@ -432,9 +433,9 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
   NATIVE_COMPLEX.insertMember( "i", sizeof(double), PredType::NATIVE_DOUBLE);
   NATIVE_COMPLEX.pack();
 
-  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw("Type error.");
+  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw(std::domain_error("Dataset type error."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw("Not a matrix");
+  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw(std::domain_error("Not a matrix."));
   hsize_t dims[2];
   data_dataspace.getSimpleExtentDims( dims );
 
@@ -450,12 +451,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
 
   DataSet data_dataset = outfile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw("Not a double.");
+  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw(std::domain_error("Not a double."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != 1 ) throw("Vector");
+  if( dims[0] != 1 ) throw(std::domain_error("Vector."));
 
   data_dataset.write(&d, PredType::NATIVE_DOUBLE);
 }
@@ -465,12 +466,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
 
   DataSet data_dataset = outfile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw("Not an integer.");
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != 1 ) throw("Vector");
+  if( dims[0] != 1 ) throw(std::domain_error("Vector."));
 
   data_dataset.write(&i, PredType::NATIVE_INT);
 }
@@ -485,12 +486,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
   NATIVE_COMPLEX.insertMember( "i", sizeof(double), PredType::NATIVE_DOUBLE);
   NATIVE_COMPLEX.pack();
 
-  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw("Type error.");
+  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw(std::domain_error("Dataset type error."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != 1 ) throw("Vector");
+  if( dims[0] != 1 ) throw(std::domain_error("Vector."));
 
   data_dataset.write(&c, NATIVE_COMPLEX);
 }
@@ -500,12 +501,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
 
   DataSet data_dataset = outfile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw("Not a double.");
+  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw(std::domain_error("Not a double."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != v.size() ) throw("Size mismatch.");
+  if( dims[0] != v.size() ) throw(std::out_of_range("Size mismatch."));
 
   data_dataset.write(&v[0], PredType::NATIVE_DOUBLE);
 }
@@ -515,12 +516,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
 
   DataSet data_dataset = outfile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw("Not a double.");
+  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw(std::domain_error("Not a double."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != v.size() ) throw("Size mismatch.");
+  if( dims[0] != v.size() ) throw(std::out_of_range("Size mismatch."));
 
   data_dataset.write(&v[0], PredType::NATIVE_DOUBLE);
 }
@@ -530,12 +531,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
 
   DataSet data_dataset = outfile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw("Not a double.");
+  if( data_dataset.getTypeClass() != H5T_FLOAT ) throw(std::domain_error("Not a double."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw("Not a matrix.");
+  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw(std::domain_error("Not a matrix."));
   hsize_t dims[2];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != m.size1() || dims[1] != m.size2() ) throw("Size mismatch.");
+  if( dims[0] != m.size1() || dims[1] != m.size2() ) throw(std::out_of_range("Size mismatch."));
 
   data_dataset.write(&m(0, 0), PredType::NATIVE_DOUBLE);
 }
@@ -545,12 +546,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
 
   DataSet data_dataset = outfile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw("Not an integer.");
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != v.size() ) throw("Size mismatch.");
+  if( dims[0] != v.size() ) throw(std::out_of_range("Size mismatch."));
 
   data_dataset.write(&v[0], PredType::NATIVE_INT);
 }
@@ -560,12 +561,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
 
   DataSet data_dataset = outfile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw("Not an integer.");
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != v.size() ) throw("Size mismatch.");
+  if( dims[0] != v.size() ) throw(std::out_of_range("Size mismatch."));
 
   data_dataset.write(&v[0], PredType::NATIVE_INT);
 }
@@ -575,12 +576,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
 
   DataSet data_dataset = outfile.openDataSet(varname);
 
-  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw("Not an integer.");
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw("Not a matrix.");
+  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw(std::domain_error("Not a matrix."));
   hsize_t dims[2];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != m.size1() || dims[1] != m.size2() ) throw("Size mismatch.");
+  if( dims[0] != m.size1() || dims[1] != m.size2() ) throw(std::out_of_range("Size mismatch."));
 
   data_dataset.write(&m(0, 0), PredType::NATIVE_INT);
 }
@@ -596,12 +597,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
   NATIVE_COMPLEX.insertMember( "i", sizeof(double), PredType::NATIVE_DOUBLE);
   NATIVE_COMPLEX.pack();
 
-  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw("Type error.");
+  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw(std::domain_error("Dataset type error."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != v.size() ) throw("Size mismatch.");
+  if( dims[0] != v.size() ) throw(std::out_of_range("Size mismatch."));
 
   data_dataset.write(&v[0], NATIVE_COMPLEX);
 }
@@ -616,12 +617,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
   NATIVE_COMPLEX.insertMember( "i", sizeof(double), PredType::NATIVE_DOUBLE);
   NATIVE_COMPLEX.pack();
 
-  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw("Type error.");
+  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw(std::domain_error("Dataset type error."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw("Multidimensional");
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
   hsize_t dims[1];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != v.size() ) throw("Size mismatch.");
+  if( dims[0] != v.size() ) throw(std::out_of_range("Size mismatch."));
 
   data_dataset.write(&v[0], NATIVE_COMPLEX);
 }
@@ -636,12 +637,12 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
   NATIVE_COMPLEX.insertMember( "i", sizeof(double), PredType::NATIVE_DOUBLE);
   NATIVE_COMPLEX.pack();
 
-  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw("Type error.");
+  if( data_dataset.getTypeClass() != H5T_COMPOUND ) throw(std::domain_error("Dataset type error."));
   DataSpace data_dataspace = data_dataset.getSpace();
-  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw("Not a matrix.");
+  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw(std::domain_error("Not a matrix."));
   hsize_t dims[2];
   data_dataspace.getSimpleExtentDims( dims );
-  if( dims[0] != m.size1() || dims[1] != m.size2() ) throw("Size mismatch.");
+  if( dims[0] != m.size1() || dims[1] != m.size2() ) throw(std::out_of_range("Size mismatch."));
 
   data_dataset.write(&m(0, 0), NATIVE_COMPLEX);
 }
