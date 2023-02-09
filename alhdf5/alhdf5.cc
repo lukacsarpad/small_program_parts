@@ -97,6 +97,17 @@ void HDF5_save(const std::string &filename, const std::string &varname, const un
   data_dataset.write(&data, PredType::NATIVE_UINT);
 }
 
+void HDF5_save(const std::string &filename, const std::string &varname, const uint64_t data){
+  H5File outfile(filename, H5F_ACC_RDWR);
+
+  hsize_t data_dims[] = {1};
+  DataSpace data_dataspace(1, data_dims);
+
+  DataSet data_dataset = outfile.createDataSet(varname, PredType::NATIVE_ULONG, data_dataspace);
+
+  data_dataset.write(&data, PredType::NATIVE_ULONG);
+}
+
 // save: double vector, matrix
 
 void HDF5_save(const std::string &filename, const std::string &varname, const std::vector<double> & data){
@@ -201,6 +212,39 @@ void HDF5_save(const std::string &filename, const std::string &varname, const bo
   data_dataset.write(&data(0, 0), PredType::NATIVE_UINT);
 }
 
+void HDF5_save(const std::string &filename, const std::string &varname, const std::vector<uint64_t> & data){
+  H5File outfile(filename, H5F_ACC_RDWR);
+
+  hsize_t data_dims[] = {data.size()};
+  DataSpace data_dataspace(1, data_dims);
+
+  DataSet data_dataset = outfile.createDataSet(varname, PredType::NATIVE_ULONG, data_dataspace);
+
+  data_dataset.write(&data[0], PredType::NATIVE_ULONG);
+}
+
+void HDF5_save(const std::string &filename, const std::string &varname, const boost::numeric::ublas::vector<uint64_t> & data){
+  H5File outfile(filename, H5F_ACC_RDWR);
+
+  hsize_t data_dims[] = {data.size()};
+  DataSpace data_dataspace(1, data_dims);
+
+  DataSet data_dataset = outfile.createDataSet(varname, PredType::NATIVE_ULONG, data_dataspace);
+
+  data_dataset.write(&data[0], PredType::NATIVE_ULONG);
+}
+
+void HDF5_save(const std::string &filename, const std::string &varname, const boost::numeric::ublas::matrix<uint64_t> & data){
+  H5File outfile(filename, H5F_ACC_RDWR);
+
+  hsize_t data_dims[] = {data.size1(), data.size2()};
+  DataSpace data_dataspace(2, data_dims);
+
+  DataSet data_dataset = outfile.createDataSet(varname, PredType::NATIVE_ULONG, data_dataspace);
+
+  data_dataset.write(&data(0, 0), PredType::NATIVE_ULONG);
+}
+
 // save: complex vector, matrix
 
 void HDF5_save(const std::string &filename, const std::string &varname, const std::vector<std::complex<double> > & data){
@@ -303,6 +347,24 @@ unsigned int HDF5_read_unsigned_int(const std::string &filename, const std::stri
 
   unsigned int retval;
   data_dataset.read(&retval, PredType::NATIVE_UINT);
+
+  return retval;
+}
+
+uint64_t HDF5_read_uint64(const std::string &filename, const std::string &varname){
+  H5File infile(filename, H5F_ACC_RDONLY);
+
+  DataSet data_dataset = infile.openDataSet(varname);
+
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
+  DataSpace data_dataspace = data_dataset.getSpace();
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional,"));
+  hsize_t dims[1];
+  data_dataspace.getSimpleExtentDims( dims );
+  if( dims[0] != 1 ) throw(std::domain_error("Vector"));
+
+  unsigned int retval;
+  data_dataset.read(&retval, PredType::NATIVE_ULONG);
 
   return retval;
 }
@@ -487,6 +549,51 @@ void HDF5_read(const std::string &filename, const std::string &varname, boost::n
   data_dataset.read( &mat(0, 0), PredType::NATIVE_UINT);
 }
 
+void HDF5_read(const std::string &filename, const std::string &varname, std::vector<uint64_t> & vec){
+  H5File infile(filename, H5F_ACC_RDONLY);
+
+  DataSet data_dataset = infile.openDataSet(varname);
+
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
+  DataSpace data_dataspace = data_dataset.getSpace();
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
+  hsize_t dims[1];
+  data_dataspace.getSimpleExtentDims( dims );
+
+  vec = std::vector<uint64_t>(dims[0]);
+  data_dataset.read(&vec[0], PredType::NATIVE_ULONG);
+}
+
+void HDF5_read(const std::string &filename, const std::string &varname, boost::numeric::ublas::vector<uint64_t> & vec){
+  H5File infile(filename, H5F_ACC_RDONLY);
+
+  DataSet data_dataset = infile.openDataSet(varname);
+
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
+  DataSpace data_dataspace = data_dataset.getSpace();
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
+  hsize_t dims[1];
+  data_dataspace.getSimpleExtentDims( dims );
+
+  vec = boost::numeric::ublas::vector<uint64_t>(dims[0]);
+  data_dataset.read(&vec[0], PredType::NATIVE_ULONG);
+}
+
+void HDF5_read(const std::string &filename, const std::string &varname, boost::numeric::ublas::matrix<uint64_t> & mat){
+  H5File infile(filename, H5F_ACC_RDONLY);
+
+  DataSet data_dataset = infile.openDataSet(varname);
+
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
+  DataSpace data_dataspace = data_dataset.getSpace();
+  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw(std::domain_error("Not a matrix."));
+  hsize_t dims[2];
+  data_dataspace.getSimpleExtentDims( dims );
+
+  mat = boost::numeric::ublas::matrix<unsigned int>(dims[0], dims[1]);
+  data_dataset.read( &mat(0, 0), PredType::NATIVE_ULONG);
+}
+
 // read operations: complex vector, matrix
 
 void HDF5_read(const std::string &filename, const std::string &varname, std::vector<std::complex<double> > & vec){
@@ -595,6 +702,21 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
   if( dims[0] != 1 ) throw(std::domain_error("Vector."));
 
   data_dataset.write(&i, PredType::NATIVE_UINT);
+}
+
+void HDF5_replace(const std::string & filename, const std::string &varname, const uint64_t i){
+  H5File outfile(filename, H5F_ACC_RDWR);
+
+  DataSet data_dataset = outfile.openDataSet(varname);
+
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
+  DataSpace data_dataspace = data_dataset.getSpace();
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
+  hsize_t dims[1];
+  data_dataspace.getSimpleExtentDims( dims );
+  if( dims[0] != 1 ) throw(std::domain_error("Vector."));
+
+  data_dataset.write(&i, PredType::NATIVE_ULONG);
 }
 
 void HDF5_replace(const std::string & filename, const std::string &varname, const std::complex<double> c){
@@ -750,6 +872,51 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
   if( dims[0] != m.size1() || dims[1] != m.size2() ) throw(std::out_of_range("Size mismatch."));
 
   data_dataset.write(&m(0, 0), PredType::NATIVE_UINT);
+}
+
+void HDF5_replace(const std::string & filename, const std::string &varname, const std::vector<uint64_t> &v){
+  H5File outfile(filename, H5F_ACC_RDWR);
+
+  DataSet data_dataset = outfile.openDataSet(varname);
+
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
+  DataSpace data_dataspace = data_dataset.getSpace();
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
+  hsize_t dims[1];
+  data_dataspace.getSimpleExtentDims( dims );
+  if( dims[0] != v.size() ) throw(std::out_of_range("Size mismatch."));
+
+  data_dataset.write(&v[0], PredType::NATIVE_ULONG);
+}
+
+void HDF5_replace(const std::string & filename, const std::string &varname, const boost::numeric::ublas::vector<uint64_t> &v){
+  H5File outfile(filename, H5F_ACC_RDWR);
+
+  DataSet data_dataset = outfile.openDataSet(varname);
+
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
+  DataSpace data_dataspace = data_dataset.getSpace();
+  if( data_dataspace.getSimpleExtentNdims() != 1 ) throw(std::domain_error("Multidimensional."));
+  hsize_t dims[1];
+  data_dataspace.getSimpleExtentDims( dims );
+  if( dims[0] != v.size() ) throw(std::out_of_range("Size mismatch."));
+
+  data_dataset.write(&v[0], PredType::NATIVE_ULONG);
+}
+
+void HDF5_replace(const std::string & filename, const std::string &varname, const boost::numeric::ublas::matrix<uint64_t> &m){
+  H5File outfile(filename, H5F_ACC_RDWR);
+
+  DataSet data_dataset = outfile.openDataSet(varname);
+
+  if( data_dataset.getTypeClass() != H5T_INTEGER ) throw(std::domain_error("Not an integer."));
+  DataSpace data_dataspace = data_dataset.getSpace();
+  if( data_dataspace.getSimpleExtentNdims() != 2 ) throw(std::domain_error("Not a matrix."));
+  hsize_t dims[2];
+  data_dataspace.getSimpleExtentDims( dims );
+  if( dims[0] != m.size1() || dims[1] != m.size2() ) throw(std::out_of_range("Size mismatch."));
+
+  data_dataset.write(&m(0, 0), PredType::NATIVE_ULONG);
 }
 
 void HDF5_replace(const std::string & filename, const std::string &varname, const std::vector<std::complex<double> > &v){
