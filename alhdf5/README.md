@@ -22,4 +22,4 @@ To see functions implemented see alhdf5.h and alhdf5.txt. The latter one is auto
 
 # Requierements
 
-Compilation requieres `g++` (another C++ compiler may also work), `libhdf5-dev` and `libboost-dev`.
+Compilation requires `g++` (another C++ compiler may also work), `libhdf5-dev` and `libboost-dev`.
