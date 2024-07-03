@@ -979,3 +979,7 @@ void HDF5_replace(const std::string & filename, const std::string &varname, cons
   data_dataset.write(&m(0, 0), NATIVE_COMPLEX);
 }
 
+bool HDF5_exists(const std::string &filename, const std::string &name){
+  H5File file(filename, H5F_ACC_RDONLY);
+  return file.nameExists(name);
+}

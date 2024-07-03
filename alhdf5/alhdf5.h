@@ -89,4 +89,6 @@ void HDF5_replace(const std::string &, const std::string &, const boost::numeric
 void HDF5_replace(const std::string &, const std::string &, const std::vector<std::complex<double> > &);
 void HDF5_replace(const std::string &, const std::string &, const boost::numeric::ublas::matrix<std::complex<double> > &);
 
+bool HDF5_exists(const std::string &, const std::string &);
+
 #endif  // ALHDF5_ALHDF5_H_
